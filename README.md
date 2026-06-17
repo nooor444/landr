@@ -60,21 +60,6 @@ Vercel                       ← cloud deployment + CI/CD
 
 ---
 
-## Local Setup
-
-```bash
-git clone https://github.com/YOUR_USERNAME/landr
-cd landr
-npm install
-cp .env.example .env.local
-# Fill in: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_ANON_KEY, GEMINI_API_KEY
-npm run dev
-```
-
-Visit `http://localhost:3000`
-
----
-
 ## Skills Demonstrated
 
 `full-stack development` `cloud-native architecture` `microservices` `PostgreSQL`  
