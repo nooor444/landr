@@ -2,13 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  // Never intercept the OAuth callback — the session isn't established yet
-  // at this point and running getUser() here can break the PKCE code exchange.
-  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
-    return NextResponse.next()
-  }
-
-  let supabaseResponse = NextResponse.next({ request })
+  const supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,10 +13,6 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
-          supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
@@ -31,12 +21,12 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  // getSession() reads the JWT from the cookie — no network call, runs in <10ms.
+  // (getUser() makes a round-trip to Supabase to verify the token server-side
+  // and is the cause of MIDDLEWARE_INVOCATION_TIMEOUT on Vercel free tier.)
+  const { data: { session } } = await supabase.auth.getSession()
 
-  const protectedPaths = ['/dashboard', '/checklist', '/chat', '/community', '/onboarding']
-  const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
-
-  if (!user && isProtected) {
+  if (!session) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
@@ -45,8 +35,13 @@ export async function middleware(request: NextRequest) {
   return supabaseResponse
 }
 
+// Only run middleware on protected routes — never on public pages,
+// API routes, static files, or the auth callback.
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/dashboard/:path*',
+    '/checklist/:path*',
+    '/chat/:path*',
+    '/community/:path*',
   ],
 }
