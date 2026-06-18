@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import DashboardClient from '@/components/dashboard/DashboardClient'
 import GenerateChecklistButton from '@/components/dashboard/GenerateChecklistButton'
 
@@ -51,16 +52,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      {/* Nav */}
-      <nav className="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <span className="text-lg font-bold text-emerald-700">Landr</span>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <Link href="/checklist" className="hover:text-emerald-600 transition">Checklist</Link>
-            <Link href="/community" className="hover:text-emerald-600 transition">Community</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <main className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-6">
         {/* Onboarding banner */}

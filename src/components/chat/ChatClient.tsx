@@ -169,8 +169,13 @@ export default function ChatClient({
             )}
           </div>
         </div>
-        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-          <span className="text-sm">🍀</span>
+        <div className="flex items-center gap-3">
+          <Link href="/community" className="text-xs text-gray-500 hover:text-emerald-600 transition font-medium">
+            Community
+          </Link>
+          <Link href="/checklist" className="text-xs text-gray-500 hover:text-emerald-600 transition font-medium">
+            Checklist
+          </Link>
         </div>
       </div>
 
@@ -285,7 +290,7 @@ export default function ChatClient({
             placeholder="Ask anything about your visa, checklist, or settling in…"
             rows={1}
             disabled={isStreaming}
-            className="flex-1 resize-none border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent disabled:opacity-50 leading-relaxed max-h-32 overflow-y-auto"
+            className="flex-1 resize-none border border-gray-200 rounded-2xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent disabled:opacity-50 leading-relaxed max-h-32 overflow-y-auto dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-500"
             style={{ minHeight: '48px' }}
           />
           <button

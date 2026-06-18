@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
+import Nav from '@/components/Nav'
 import ChecklistClient from '@/components/checklist/ChecklistClient'
 
 export default async function ChecklistPage() {
@@ -32,22 +32,7 @@ export default async function ChecklistPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      {/* Nav */}
-      <nav className="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard" className="text-lg font-bold text-emerald-700">
-            Landr
-          </Link>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <Link href="/dashboard" className="hover:text-emerald-600 transition">
-              Dashboard
-            </Link>
-            <Link href="/chat" className="hover:text-emerald-600 transition">
-              Ask AI
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
