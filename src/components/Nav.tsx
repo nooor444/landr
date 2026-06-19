@@ -10,13 +10,18 @@ const links = [
   { href: '/community', label: 'Community' },
 ]
 
-export default function Nav() {
+type Props = {
+  userName?: string
+}
+
+export default function Nav({ userName }: Props) {
   const pathname = usePathname()
+  const initial = userName ? userName[0].toUpperCase() : '?'
 
   return (
-    <nav className="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-10">
+    <nav className="bg-white/90 backdrop-blur border-b border-gray-100 sticky top-0 z-10 shadow-sm">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link href="/dashboard" className="text-lg font-bold text-emerald-700 flex-shrink-0">
+        <Link href="/dashboard" className="text-lg font-bold text-emerald-700 flex-shrink-0 tracking-tight">
           Landr
         </Link>
         <div className="flex items-center gap-1">
@@ -34,6 +39,11 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
+          {userName && (
+            <div className="ml-2 w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              {initial}
+            </div>
+          )}
         </div>
       </div>
     </nav>

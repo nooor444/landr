@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
+import NavWrapper from '@/components/NavWrapper'
 import DashboardClient from '@/components/dashboard/DashboardClient'
 import GenerateChecklistButton from '@/components/dashboard/GenerateChecklistButton'
 
@@ -23,7 +23,6 @@ export default async function DashboardPage() {
   const onboardingComplete =
     profile?.destination_country && profile?.visa_type
 
-  // Fetch all checklist items to compute progress
   const { data: allItems } = await supabase
     .from('checklist_items')
     .select('id, is_completed')
@@ -32,7 +31,6 @@ export default async function DashboardPage() {
   const totalCount = allItems?.length ?? 0
   const completedCount = allItems?.filter(i => i.is_completed).length ?? 0
 
-  // Top 3 urgent incomplete items (lowest deadline_days first, then priority)
   const { data: urgentItems } = await supabase
     .from('checklist_items')
     .select('id, title, description, category, deadline_days, official_link')
@@ -51,10 +49,10 @@ export default async function DashboardPage() {
   const destination = profile?.destination_country ?? ''
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Nav />
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+      <NavWrapper />
 
-      <main className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-6">
+      <main className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-5">
         {/* Onboarding banner */}
         {!onboardingComplete && (
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center justify-between gap-4">
@@ -66,24 +64,12 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/onboarding"
-              className="bg-amber-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-amber-600 transition whitespace-nowrap"
+              className="bg-amber-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-amber-600 hover:scale-[1.02] transition-all whitespace-nowrap"
             >
               Finish quiz →
             </Link>
           </div>
         )}
-
-        {/* Welcome */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">
-            Welcome, {displayName}.
-          </h1>
-          {destination && (
-            <p className="text-gray-500 mt-1 text-lg">
-              Let&apos;s get you settled in {destination}.
-            </p>
-          )}
-        </div>
 
         {/* Checklist section */}
         {onboardingComplete && totalCount === 0 ? (
@@ -102,45 +88,10 @@ export default async function DashboardPage() {
             initialItems={urgentItems ?? []}
             totalCount={totalCount}
             completedCount={completedCount}
+            displayName={displayName}
+            destination={destination}
           />
         )}
-
-        {/* CTA buttons */}
-        <div className="grid grid-cols-2 gap-4">
-          <Link
-            href="/checklist"
-            className="bg-white border-2 border-emerald-200 hover:border-emerald-400 rounded-2xl p-5 flex flex-col items-center gap-2 text-center transition group shadow-sm"
-          >
-            <span className="text-3xl">✅</span>
-            <span className="font-semibold text-gray-800 group-hover:text-emerald-700 transition">
-              View Full Checklist
-            </span>
-            <span className="text-xs text-gray-400">All your steps in one place</span>
-          </Link>
-          <Link
-            href="/chat"
-            className="bg-emerald-600 hover:bg-emerald-700 rounded-2xl p-5 flex flex-col items-center gap-2 text-center transition group shadow-sm"
-          >
-            <span className="text-3xl">💬</span>
-            <span className="font-semibold text-white">Ask a Question</span>
-            <span className="text-xs text-emerald-200">AI that knows your situation</span>
-          </Link>
-        </div>
-
-        {/* Community teaser */}
-        <Link
-          href="/community"
-          className="bg-white border border-gray-100 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:border-emerald-200 transition"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🤝</span>
-            <div>
-              <p className="font-semibold text-gray-800 text-sm">Community Forum</p>
-              <p className="text-xs text-gray-500">Questions, tips, and stories from people on the same journey</p>
-            </div>
-          </div>
-          <span className="text-gray-300 text-lg">→</span>
-        </Link>
       </main>
     </div>
   )

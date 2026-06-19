@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
+import NavWrapper from '@/components/NavWrapper'
 import CommunityClient from '@/components/community/CommunityClient'
 
 export default async function CommunityPage() {
@@ -24,7 +24,7 @@ export default async function CommunityPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Nav />
+      <NavWrapper />
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>

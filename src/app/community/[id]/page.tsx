@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
+import NavWrapper from '@/components/NavWrapper'
 import ReplySection from '@/components/community/ReplySection'
 import { timeAgo, firstName } from '@/lib/time'
 
@@ -34,7 +34,7 @@ export default async function ThreadPage({ params }: { params: { id: string } })
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Nav />
+      <NavWrapper />
       <main className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-6">
         {/* Back */}
         <Link

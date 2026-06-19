@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
+import NavWrapper from '@/components/NavWrapper'
 import NewPostForm from '@/components/community/NewPostForm'
 
 export default async function NewPostPage() {
@@ -15,7 +15,7 @@ export default async function NewPostPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Nav />
+      <NavWrapper />
       <main className="max-w-2xl mx-auto px-4 py-8">
         <Link
           href="/community"

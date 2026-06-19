@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Nav from '@/components/Nav'
+import NavWrapper from '@/components/NavWrapper'
 import ChecklistClient from '@/components/checklist/ChecklistClient'
 
 export default async function ChecklistPage() {
@@ -28,14 +28,13 @@ export default async function ChecklistPage() {
 
   const all = items ?? []
   const totalCount = all.length
-  const completedCount = all.filter((i) => i.is_completed).length
+  const completedCount = all.filter(i => i.is_completed).length
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Nav />
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+      <NavWrapper />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Your Checklist</h1>
           {profile?.destination_country && profile?.visa_type && (
